@@ -1,0 +1,535 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "GeistSans Fallback";
+  src: local("Arial");
+  ascent-override: 94.56%;
+  descent-override: 27.76%;
+  line-gap-override: 0%;
+  size-adjust: 106.28%;
+}
+
+@theme {
+  /* Typography */
+  --font-sans: "Geist Variable", "GeistSans Fallback", ui-sans-serif, system-ui, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --font-serif: "Newsreader Variable", Georgia, "Times New Roman", serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, monospace;
+
+  /* 1px Base Spacing Scale */
+  --spacing: 0.0625rem;
+
+  /* 8-Token Palette */
+  --color-black-deep: #000000;
+  --color-black: #232323;
+  --color-white: #ffffff;
+  --color-off-white: #f1eee7;
+  --color-dark-grey: #5b5a56;
+  --color-ghost-grey: #dedede;
+  --color-mid-grey: #cbcbcb;
+  --color-accent: #ff9100;
+
+  /* Radii */
+  --radius-2: 2px;
+  --radius-4: 4px;
+  --radius-8: 8px;
+  --radius-12: 12px;
+  --radius-16: 16px;
+  --radius-full: 9999px;
+
+  /* Fluid Scale Geometry */
+  --layout-min-w: 375;
+  --layout-max-w: 1600;
+  --fluid-min-w: var(--layout-min-w, 375);
+  --fluid-max-w: var(--layout-max-w, 1600);
+  --fluid-slope: calc((100vw - calc(var(--spacing) * var(--fluid-min-w))) / (var(--fluid-max-w) - var(--fluid-min-w)));
+
+  /* Fluid Type Scale */
+  --text-ui: calc(var(--spacing) * 12);
+  --text-ui--font-weight: 400;
+  --text-ui--line-height: 1.25;
+  --text-ui--letter-spacing: normal;
+
+  --text-ui-20: calc(var(--spacing) * 16);
+  --text-ui-20--font-weight: 400;
+  --text-ui-20--line-height: 1.25;
+  --text-ui-20--letter-spacing: normal;
+
+  --text-caption-10: clamp(12px, 12px + (14 - 12) * var(--fluid-slope), 14px);
+  --text-caption-10--font-weight: 400;
+  --text-caption-10--line-height: 1.25;
+  --text-caption-10--letter-spacing: normal;
+
+  --text-caption-20: clamp(14px, 14px + (16 - 14) * var(--fluid-slope), 16px);
+  --text-caption-20--font-weight: 400;
+  --text-caption-20--line-height: 1.25;
+  --text-caption-20--letter-spacing: normal;
+
+  --text-body-10: clamp(14px, 14px + (16 - 14) * var(--fluid-slope), 16px);
+  --text-body-10--font-weight: 400;
+  --text-body-10--line-height: 1.25;
+  --text-body-10--letter-spacing: normal;
+
+  --text-body-20: clamp(14px, 14px + (18 - 14) * var(--fluid-slope), 18px);
+  --text-body-20--font-weight: 400;
+  --text-body-20--line-height: 1.25;
+  --text-body-20--letter-spacing: normal;
+
+  --text-body-30: clamp(16px, 16px + (24 - 16) * var(--fluid-slope), 24px);
+  --text-body-30--font-weight: 400;
+  --text-body-30--line-height: 1.25;
+  --text-body-30--letter-spacing: normal;
+
+  --text-headline-10: clamp(32px, 32px + (48 - 32) * var(--fluid-slope), 48px);
+  --text-headline-10--font-weight: 400;
+  --text-headline-10--line-height: 1.1;
+  --text-headline-10--letter-spacing: normal;
+
+  --text-headline-20: clamp(40px, 40px + (80 - 40) * ((100vw - 1400px) / (1920 - 1400)), 80px);
+  --text-headline-20--font-weight: 400;
+  --text-headline-20--line-height: 1;
+  --text-headline-20--letter-spacing: normal;
+
+  --text-display-10: clamp(168px, 168px + (280 - 168) * var(--fluid-slope), 280px);
+  --text-display-10--font-weight: 500;
+  --text-display-10--line-height: 0.82;
+  --text-display-10--letter-spacing: -0.045em;
+
+  /* Motion Curves & Animations */
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --animate-fade-in: fadeIn 0.4s var(--ease-in-out) forwards;
+  --animate-cursor-blink: cursorBlink 0.9s steps(1, end) infinite;
+  --animate-status-ping: statusPing 1.8s var(--ease-out) infinite;
+  --animate-hero-scroll-cue: heroScrollCue 1.44s steps(8, end) infinite;
+  --animate-minimap-scan: minimapScan 5s ease-in-out infinite;
+  --animate-minimap-scan-counter: minimapScanCounter 5s ease-in-out infinite;
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes cursorBlink {
+    0%,
+    49.9% {
+      opacity: 1;
+    }
+    50%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes statusPing {
+    0% {
+      opacity: 0.5;
+      transform: scale(1);
+    }
+    75%,
+    100% {
+      opacity: 0;
+      transform: scale(2.6);
+    }
+  }
+
+  @keyframes heroScrollCue {
+    0% {
+      inset: var(--ring-from, 0px);
+      opacity: var(--ring-from-opacity, 0.9);
+    }
+    100% {
+      inset: var(--ring-to, 10px);
+      opacity: var(--ring-to-opacity, 0);
+    }
+  }
+
+  @keyframes minimapScan {
+    0%,
+    100% {
+      transform: translateY(0%);
+    }
+    50% {
+      transform: translateY(45%);
+    }
+  }
+
+  @keyframes minimapScanCounter {
+    0%,
+    100% {
+      opacity: 0.65;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+}
+
+:root {
+  /* Seam & Dive Scroll Rhythm */
+  --seam: 360px;
+  --dive-distance: 200svh;
+  --dive-hold: calc(var(--dive-distance) * 0.6);
+  --repo-distance: 60svh;
+
+  /* Sugar-High Syntax Highlighting Tokens */
+  --sh-class: #61afef;
+  --sh-comment: #56b6c2;
+  --sh-entity: #e5c07b;
+  --sh-identifier: #abb2bf;
+  --sh-jsxliterals: #c678dd;
+  --sh-keyword: #e06c75;
+  --sh-number: #61afef;
+  --sh-property: #98c379;
+  --sh-sign: #e06c75;
+  --sh-string: #98c379;
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --seam: 520px;
+  }
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: var(--font-sans);
+    background-color: var(--color-off-white);
+    color: var(--color-black);
+    scroll-behavior: smooth;
+  }
+
+  @media (pointer: fine) {
+    html {
+      overscroll-behavior: none;
+    }
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-off-white);
+    color: var(--color-black);
+    overflow-x: clip;
+    margin: 0;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: #d4d4d4;
+    color: #0000a8;
+  }
+
+  [id] {
+    scroll-margin-top: calc(var(--spacing) * 96);
+  }
+}
+
+/* Signature Motif 1: Checkerboard Bezel */
+.checkerboard-bezel {
+  background-color: var(--color-black-deep);
+  background-image: repeating-conic-gradient(
+    rgba(255, 255, 255, 0.22) 0% 25%,
+    transparent 0% 50%
+  );
+  background-size: 4px 4px;
+}
+
+/* Signature Motif 2: Ticket Notches & Dashed Perforation */
+.ticket-notches {
+  --notch: 12px;
+  --notch-stops: transparent calc(var(--notch) - 0.5px), black var(--notch);
+  -webkit-mask-image:
+    radial-gradient(circle at var(--notch-a, 0 58%), var(--notch-stops)),
+    radial-gradient(circle at var(--notch-b, 100% 58%), var(--notch-stops));
+  mask-image:
+    radial-gradient(circle at var(--notch-a, 0 58%), var(--notch-stops)),
+    radial-gradient(circle at var(--notch-b, 100% 58%), var(--notch-stops));
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+@media (min-width: 64rem) {
+  .ticket-notches {
+    --notch: 14px;
+  }
+}
+
+@media (min-width: 80rem) {
+  .ticket-notches {
+    --notch-a: 58.3333% 0;
+    --notch-b: 58.3333% 100%;
+  }
+}
+
+.ticket-perforation {
+  height: 1px;
+  width: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    currentColor 0 5px,
+    transparent 5px 10px
+  );
+}
+
+@media (min-width: 80rem) {
+  .ticket-perforation {
+    width: 1px;
+    height: auto;
+    align-self: stretch;
+    background: repeating-linear-gradient(
+      180deg,
+      currentColor 0 5px,
+      transparent 5px 10px
+    );
+  }
+}
+
+/* Signature Motif 3: Odometer Slot-Machine Glyph Hover & Split Connector */
+[data-odometer] {
+  display: inline-flex;
+  align-items: baseline;
+  white-space: pre;
+}
+
+[data-odometer-column] {
+  display: inline-flex;
+  flex-direction: column;
+  height: 1em;
+  line-height: 1em;
+  overflow: hidden;
+  vertical-align: top;
+}
+
+[data-odometer-glyph] {
+  display: block;
+  height: 1em;
+  line-height: 1em;
+  transform: translateY(calc(var(--odometer-progress, 0) * -5em));
+  transition-property: transform;
+  transition-duration: 520ms;
+  transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  transition-delay: calc(var(--odometer-progress, 0) * var(--odometer-delay, 0ms));
+  will-change: transform;
+}
+
+@media (hover: hover) {
+  :is(a, button, [data-odometer-trigger]):hover [data-odometer] {
+    --odometer-progress: 1;
+  }
+}
+
+[data-connector] {
+  transition-property: background-color, color;
+  transition-duration: 150ms;
+  transition-timing-function: var(--ease-in-out);
+}
+
+[data-connector-notch="top"] {
+  clip-path: path("M0 0H1C1 1.1046 1.8954 2 3 2C4.1046 2 5 1.1046 5 0H6V4H0Z");
+}
+
+[data-connector-notch="bottom"] {
+  clip-path: path("M0 4H1C1 2.8954 1.8954 2 3 2C4.1046 2 5 2.8954 5 4H6V0H0Z");
+}
+
+/* Signature Motif 4: Seam Room, Dive Choreography & Tabular Numerals */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.scrollbar-invisible {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-invisible::-webkit-scrollbar {
+  display: none;
+}
+
+.seam-room::before,
+.seam-room::after {
+  content: "";
+  display: block;
+  height: calc(var(--seam) * 0.5);
+  pointer-events: none;
+}
+
+@media (min-width: 64rem) {
+  @media (prefers-reduced-motion: no-preference) {
+    :where(html:not([data-motion="reduce"])) .dive-track:has(+ [data-dive-arrival]) {
+      height: calc(100svh + var(--dive-distance));
+      margin-bottom: calc(-100svh - var(--dive-hold));
+    }
+
+    :where(html:not([data-motion="reduce"])) .dive-track + [data-dive-arrival] {
+      scroll-margin-top: calc(-1 * var(--dive-hold));
+    }
+
+    :where(html:not([data-motion="reduce"])) .dive-track + [data-dive-arrival] > * {
+      position: sticky;
+      top: 0;
+    }
+
+    :where(html:not([data-motion="reduce"])) .dive-track + [data-dive-arrival]::after {
+      content: "";
+      height: calc(var(--dive-hold) + 140svh);
+      display: block;
+    }
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  :root {
+    --dive-distance: auto;
+    --dive-hold: auto;
+    --repo-distance: auto;
+  }
+
+  [class*="animate-"] {
+    animation: none !important;
+  }
+
+  [data-odometer] {
+    --odometer-progress: 0;
+  }
+
+  [data-odometer-glyph] {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+html[data-motion="reduce"] {
+  scroll-behavior: auto;
+  --dive-distance: auto;
+  --dive-hold: auto;
+  --repo-distance: auto;
+}
+
+html[data-motion="reduce"] [class*="animate-"] {
+  animation: none !important;
+}
+
+html[data-motion="reduce"] [data-odometer] {
+  --odometer-progress: 0;
+}
+
+html[data-motion="reduce"] [data-odometer-glyph] {
+  transition: none !important;
+  transform: none !important;
+}
+
+/* ==========================================================================
+   Isolated Notes Blog Universe (.notes-theme) — Ellipsus Visual System
+   ========================================================================== */
+
+.notes-theme {
+  font-family: "Manrope Variable", "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  background-color: #f4f4f2;
+  color: #282825;
+}
+
+@keyframes notesInkDraw {
+  from {
+    stroke-dashoffset: 102;
+    opacity: 0.25;
+  }
+  to {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+.notes-theme .ink-path-primary,
+.notes-theme .ink-path-secondary {
+  stroke-dasharray: 102;
+  stroke-dashoffset: 102;
+  transition: stroke-dashoffset 480ms cubic-bezier(0.22, 1, 0.36, 1), opacity 220ms ease-out;
+}
+
+.notes-theme .ink-path-secondary {
+  transition-delay: 90ms;
+}
+
+/* Draw automatically once mounted */
+.notes-theme .ink-draw-mount .ink-path-primary {
+  animation: notesInkDraw 760ms cubic-bezier(0.22, 1, 0.36, 1) 140ms forwards;
+}
+
+.notes-theme .ink-draw-mount .ink-path-secondary {
+  animation: notesInkDraw 620ms cubic-bezier(0.22, 1, 0.36, 1) 340ms forwards;
+}
+
+/* Active state stays cleanly drawn */
+.notes-theme .ink-draw-active .ink-path-primary,
+.notes-theme .ink-draw-active .ink-path-secondary {
+  stroke-dashoffset: 0;
+  opacity: 1;
+}
+
+/* Hover / focus-visible dynamic draw on cards, links, tabs */
+.notes-theme .ink-mark-wrap:hover .ink-draw-hover .ink-path-primary,
+.notes-theme .ink-mark-wrap:hover .ink-draw-hover .ink-path-secondary,
+.notes-theme .group:hover .ink-draw-hover .ink-path-primary,
+.notes-theme .group:hover .ink-draw-hover .ink-path-secondary,
+.notes-theme .group:focus-visible .ink-draw-hover .ink-path-primary,
+.notes-theme .group:focus-visible .ink-draw-hover .ink-path-secondary,
+.notes-theme a:hover .ink-draw-hover .ink-path-primary,
+.notes-theme a:hover .ink-draw-hover .ink-path-secondary,
+.notes-theme a:focus-visible .ink-draw-hover .ink-path-primary,
+.notes-theme a:focus-visible .ink-draw-hover .ink-path-secondary,
+.notes-theme button:hover .ink-draw-hover .ink-path-primary,
+.notes-theme button:hover .ink-draw-hover .ink-path-secondary,
+.notes-theme button:focus-visible .ink-draw-hover .ink-path-primary,
+.notes-theme button:focus-visible .ink-draw-hover .ink-path-secondary {
+  stroke-dashoffset: 0;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notes-theme .ink-draw-mount .ink-path-primary,
+  .notes-theme .ink-draw-mount .ink-path-secondary,
+  .notes-theme .ink-draw-active .ink-path-primary,
+  .notes-theme .ink-draw-active .ink-path-secondary {
+    animation: none !important;
+    stroke-dashoffset: 0;
+    opacity: 1;
+    transition: none;
+  }
+}
+
+html[data-motion="reduce"] .notes-theme .ink-draw-mount .ink-path-primary,
+html[data-motion="reduce"] .notes-theme .ink-draw-mount .ink-path-secondary,
+html[data-motion="reduce"] .notes-theme .ink-draw-active .ink-path-primary,
+html[data-motion="reduce"] .notes-theme .ink-draw-active .ink-path-secondary {
+  animation: none !important;
+  stroke-dashoffset: 0;
+  opacity: 1;
+  transition: none;
+}
